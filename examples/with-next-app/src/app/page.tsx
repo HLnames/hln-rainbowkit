@@ -1,4 +1,4 @@
-import { ConnectButton } from '@hlnames/rainbowkit';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 function Page() {
   return (

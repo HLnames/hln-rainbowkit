@@ -1,4 +1,4 @@
-import { getDefaultConfig } from '@hlnames/rainbowkit';
+import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 import {
   arbitrum,
   base,
