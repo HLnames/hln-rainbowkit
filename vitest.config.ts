@@ -16,6 +16,7 @@ function customJsonLoader() {
 }
 
 export default {
+  oxc: { jsx: { runtime: 'automatic', importSource: 'react' } },
   plugins: [vanillaExtractPlugin(), customJsonLoader()],
   test: {
     environment: 'jsdom',

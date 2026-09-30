@@ -1,4 +1,44 @@
-# @rainbow-me/rainbowkit
+# @hlnames/rainbowkit
+
+## 2.0.0
+
+- Synchronize the full official RainbowKit 2.2.11 package, retaining Hyperliquid Names lookup and ENS fallback.
+- Require Wagmi ^3.7.7 and Viem ^2.56.9; migrate connector discovery, connection/disconnection mutations, formatted balances and MetaMask configuration.
+- Remove Gemini and Porto exports because their Wagmi adapters are no longer available. Preserve the Base rename's upstream compatibility alias and add the components export.
+- Declare optional wallet SDK peers, including Base's server-side x402 dependencies; align development peer instances across the package and example.
+- Make declaration errors fail the build, sort build inputs, refresh tooling with a three-day dependency cooldown, and validate the actual HLnames package in the Next example.
+
+See the repository's `UPSTREAM.md` for source provenance and consumer migration steps.
+
+## Upstream changelog
+
+## 2.2.11
+
+### Patch Changes
+
+- a40b1f4: Migrate the Base connector to canonical `base` naming, while preserving backwards-compatible aliases `baseAccount` and `coinbaseWallet`.
+- 3672dc6: Added Anchorage Digital wallet support with the `anchorageDigitalWallet` wallet connector.
+- 1043d88: Added MeCo Wallet support with `mecoWallet` wallet connector.
+- f52657f: Exposed `RainbowKitProviderProps` and `WalletButtonRendererProps` as public type exports to support Custom Wallet Button scenarios.
+- 4f2de17: Fixed a crash that could occur when selecting a wallet while multiple browser wallet extensions were installed and the specific injected wallet was missing. Wallet-specific injected connectors now bind only to their matching provider instead of falling back to available defaults.
+- bc4625c: Fix recent transaction tracking so failed transactions no longer prevent an app's own transaction receipt wait from settling.
+- 25c4c2b: Improved SSR safety to prevent WalletConnect initialization warnings and mitigate localStorage API availability changes in Node.js v25 and above.
+- f52657f: Fixed `useWindowSize` triggering a state update after unmount, which could surface as a React warning.
+- eb4251d: The `AuthenticationAdapter.createMessage` API can now return a promise, so dApps can fetch or construct a custom SIWE message asynchronously. This enables server-side SIWE message creation before prompting the wallet, while preserving existing synchronous behavior.
+
+  See the [server-side message creation docs](/docs/custom-authentication#server-side-message-creation) for guidance.
+
+- b0f6d52: fix: harden useCoolMode against malicious wallet icon URLs
+
+  The cool mode particle animation built image elements via `innerHTML`, which
+  parses its input as HTML. A malicious EIP-6963 wallet could supply a crafted
+  icon URL containing injected attributes (e.g. `onerror`) that would execute
+  in the dApp's origin when a user interacts with the wallet button.
+
+  Switched to `document.createElement('img')` with property assignment so the
+  icon value is always treated as a plain URL rather than markup.
+
+- f2523a9: Updated MetaMask wallet icon
 
 ## 2.2.10
 
@@ -13,8 +53,9 @@
 - 6c745a5: Disable third-party connector telemetry by default for user privacy. h/t @TimDaub
 
   **To opt-in to WalletConnect analytics:**
-  
+
   With `getDefaultConfig`:
+
   ```ts
   const config = getDefaultConfig({
     /** ... **/
@@ -23,15 +64,17 @@
     },
   });
   ```
-  
+
   **To opt-in to Base Account telemetry:**
+
   ```ts
   baseAccount.preference = {
     telemetry: true,
   };
   ```
-  
+
   **To opt-in to MetaMask analytics:**
+
   ```ts
   metaMaskWallet.enableAnalytics = true;
   ```

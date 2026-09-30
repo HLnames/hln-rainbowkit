@@ -1,13 +1,13 @@
 import { createConnector } from 'wagmi';
 import { type MetaMaskParameters, metaMask } from 'wagmi/connectors';
+import type { WindowProvider } from '../../../types/utils';
+import { isMobile } from '../../../utils/isMobile';
+import { getWalletConnectConnector } from '../../getWalletConnectConnector';
 import type {
   DefaultWalletOptions,
   Wallet,
   WalletDetailsParams,
 } from '../../Wallet';
-import { getWalletConnectConnector } from '../../getWalletConnectConnector';
-import { isMobile } from '../../../utils/isMobile';
-import type { WindowProvider } from '../../../types/utils';
 
 export type MetaMaskWalletOptions = DefaultWalletOptions;
 
@@ -93,7 +93,9 @@ export const metaMaskWallet: MetaMaskWallet = ({
   // We need this because MetaMask SDK hangs on impersonated wallets
   // Previously MetaMask provider would trigger for impersonated wallets
   const isMetaMaskInjected =
-    typeof window !== 'undefined' ? isMetaMask(window.ethereum) : false;
+    typeof window !== 'undefined'
+      ? isMetaMask((window as Window & WindowProvider).ethereum)
+      : false;
 
   // TODO: This is a temporary solution to prefer WalletConnect for desktop qr code.
   const shouldUseWalletConnect = !isMetaMaskInjected && !isMobile();
@@ -187,14 +189,12 @@ export const metaMaskWallet: MetaMaskWallet = ({
           return createConnector((config) => {
             const metamaskConnector = metaMask({
               dappMetadata: {
-                connector: 'rainbowkit',
                 name: walletConnectParameters?.metadata?.name,
                 iconUrl: walletConnectParameters?.metadata?.icons[0],
                 url: walletConnectParameters?.metadata?.url,
               },
               headless: true,
-              checkInstallationImmediately: false,
-              enableAnalytics: false, // Disable analytics by default
+              analytics: { enabled: false }, // Disable analytics by default
               ...optionalConfig,
             })(config);
 

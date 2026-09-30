@@ -4,11 +4,15 @@
 
 **The best way to connect a wallet 🌈 - Now with Hyperliquid Names support**
 
-This repo is a fork of `@rainbow-me/rainbowkit@2.2.10` that includes support for `.hl` Primary Names and Avatars. Users will see their `.hl` name and Avatar in both the ConnectButton and AccountModal.
+This repo is a fork of [`@rainbow-me/rainbowkit@2.2.11`](https://github.com/rainbow-me/rainbowkit/releases/tag/%40rainbow-me/rainbowkit%402.2.11) that includes support for `.hl` Primary Names and Avatars. Users will see their `.hl` name and Avatar in both the ConnectButton and AccountModal.
 
 - See the changes at this [commit](https://github.com/rainbow-me/rainbowkit/compare/main...HLnames:rainbowkit:main)
 - Learn more about [@rainbow-me/rainbowkit](https://github.com/rainbow-me/rainbowkit)
 - Learn more about [Hyperliquid Names](https://hyperliquid-names.gitbook.io/hyperliquid-names)
+
+## Fork 2.0 migration
+
+This branch prepares `@hlnames/rainbowkit@2.0.0`; publishing is a separate release step. It requires Wagmi `^3.7.7` and Viem `^2.56.9`. The official 2.2.11 source remains on Wagmi 2; this fork carries the Wagmi 3 adaptations. See [upstream provenance, breaking changes and validation](UPSTREAM.md).
 
 ## Quick start
 There are two ways to consume `@hlnames/rainbowkit`

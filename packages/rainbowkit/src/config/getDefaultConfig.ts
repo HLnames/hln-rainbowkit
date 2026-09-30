@@ -1,15 +1,14 @@
 import type { Transport } from 'viem';
-import { http, type CreateConfigParameters } from 'wagmi';
-import { createConfig } from 'wagmi';
+import { type CreateConfigParameters, createConfig, http } from 'wagmi';
 import type { RainbowKitChain } from '../components/RainbowKitProvider/RainbowKitChainContext';
+import { computeWalletConnectMetaData } from '../wallets/computeWalletConnectMetaData';
+import { connectorsForWallets } from '../wallets/connectorsForWallets';
 import type {
   RainbowKitWalletConnectParameters,
   WalletList,
 } from '../wallets/Wallet';
-import { computeWalletConnectMetaData } from '../wallets/computeWalletConnectMetaData';
-import { connectorsForWallets } from '../wallets/connectorsForWallets';
 import {
-  baseAccount,
+  base,
   metaMaskWallet,
   rainbowWallet,
   safeWallet,
@@ -85,7 +84,7 @@ export const getDefaultConfig = <
         wallets: [
           safeWallet,
           rainbowWallet,
-          baseAccount,
+          base,
           metaMaskWallet,
           walletConnectWallet,
         ],

@@ -1,11 +1,10 @@
-import { type Connector, useConnect } from 'wagmi';
+import { type Connector, useConnect, useConnectors } from 'wagmi';
 import { useWalletConnectOpenState } from '../components/RainbowKitProvider/ModalContext';
-import { indexBy } from '../utils/indexBy';
 import {
   useInitialChainId,
   useRainbowKitChains,
 } from './../components/RainbowKitProvider/RainbowKitChainContext';
-import type { WagmiConnectorInstance, WalletInstance } from './Wallet';
+import { indexBy } from '../utils/indexBy';
 import {
   getDesktopDownloadUrl,
   getExtensionDownloadUrl,
@@ -19,6 +18,7 @@ import {
   rainbowKitConnectorWithWalletConnect,
 } from './groupedWallets';
 import { addRecentWalletId, getRecentWalletIds } from './recentWalletIds';
+import type { WagmiConnectorInstance, WalletInstance } from './Wallet';
 
 export interface WalletConnector extends WalletInstance {
   ready?: boolean;
@@ -38,7 +38,8 @@ export function useWalletConnectors(
 ): WalletConnector[] {
   const rainbowKitChains = useRainbowKitChains();
   const intialChainId = useInitialChainId();
-  const { connectAsync, connectors: defaultConnectors_untyped } = useConnect();
+  const { mutateAsync: connectAsync } = useConnect();
+  const defaultConnectors_untyped = useConnectors();
   const defaultCreatedConnectors =
     defaultConnectors_untyped as WagmiConnectorInstance[];
 
@@ -204,13 +205,13 @@ export function useWalletConnectors(
       groupName: wallet.groupName,
       mobileDownloadUrl: getMobileDownloadUrl(wallet),
       getQrCodeUri: wallet.qrCode?.getUri
-        ? () => getWalletConnectUri(wallet, wallet.qrCode!.getUri!)
+        ? () => getWalletConnectUri(wallet, wallet.qrCode!.getUri)
         : undefined,
       getDesktopUri: wallet.desktop?.getUri
         ? () => getWalletConnectUri(wallet, wallet.desktop!.getUri!)
         : undefined,
       getMobileUri: wallet.mobile?.getUri
-        ? () => getWalletConnectUri(wallet, wallet.mobile?.getUri!)
+        ? () => getWalletConnectUri(wallet, wallet.mobile!.getUri!)
         : undefined,
       recent,
       showWalletConnectModal: wallet.walletConnectModalConnector

@@ -1,6 +1,7 @@
 import { argentWallet } from './argentWallet/argentWallet';
+import { anchorageDigitalWallet } from './anchorageDigitalWallet/anchorageDigitalWallet';
 import { backpackWallet } from './backpackWallet/backpackWallet';
-import { baseAccount } from './baseAccount/baseAccount';
+import { base, baseAccount } from './base/base';
 import { berasigWallet } from './berasigWallet/berasigWallet';
 import { bestWallet } from './bestWallet/bestWallet';
 import { bifrostWallet } from './bifrostWallet/bifrostWallet';
@@ -23,7 +24,6 @@ import { foxWallet } from './foxWallet/foxWallet';
 import { frameWallet } from './frameWallet/frameWallet';
 import { frontierWallet } from './frontierWallet/frontierWallet';
 import { gateWallet } from './gateWallet/gateWallet';
-import { geminiWallet } from './geminiWallet/geminiWallet';
 import { imTokenWallet } from './imTokenWallet/imTokenWallet';
 import { injectedWallet } from './injectedWallet/injectedWallet';
 import { iopayWallet } from './iopayWallet/iopayWallet';
@@ -35,6 +35,7 @@ import { ledgerWallet } from './ledgerWallet/ledgerWallet';
 import { magicEdenWallet } from './magicEdenWallet/magicEdenWallet';
 import { metaMaskWallet } from './metaMaskWallet/metaMaskWallet';
 import { mewWallet } from './mewWallet/mewWallet';
+import { mecoWallet } from './mecoWallet/mecoWallet';
 import { nestWallet } from './nestWallet/nestWallet';
 import { novaWallet } from './novaWallet/novaWallet';
 import { oktoWallet } from './oktoWallet/oktoWallet';
@@ -43,7 +44,6 @@ import { omniWallet } from './omniWallet/omniWallet';
 import { oneInchWallet } from './oneInchWallet/oneInchWallet';
 import { oneKeyWallet } from './oneKeyWallet/oneKeyWallet';
 import { paraSwapWallet } from './paraSwapWallet/paraswapWallet';
-import { portoWallet } from './portoWallet/portoWallet';
 import { phantomWallet } from './phantomWallet/phantomWallet';
 import { rabbyWallet } from './rabbyWallet/rabbyWallet';
 import { rainbowWallet } from './rainbowWallet/rainbowWallet';
@@ -73,7 +73,9 @@ import { zilPayWallet } from './ZilPayWallet/zilPayWallet';
 
 export {
   argentWallet,
+  anchorageDigitalWallet,
   backpackWallet,
+  base,
   baseAccount,
   berasigWallet,
   bestWallet,
@@ -98,7 +100,6 @@ export {
   frameWallet,
   frontierWallet,
   gateWallet,
-  geminiWallet,
   imTokenWallet,
   injectedWallet,
   iopayWallet,
@@ -110,6 +111,7 @@ export {
   magicEdenWallet,
   metaMaskWallet,
   mewWallet,
+  mecoWallet,
   nestWallet,
   novaWallet,
   oktoWallet,
@@ -119,7 +121,6 @@ export {
   oneKeyWallet,
   paraSwapWallet,
   phantomWallet,
-  portoWallet,
   rabbyWallet,
   rainbowWallet,
   readyWallet,

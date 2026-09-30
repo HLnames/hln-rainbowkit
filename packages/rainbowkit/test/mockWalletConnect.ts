@@ -9,8 +9,8 @@
  * Following Wagmi's approach: https://github.com/wevm/wagmi/blob/main/packages/connectors/src/walletConnect.test.ts
  */
 
+import { HttpResponse, http } from 'msw';
 import { setupServer } from 'msw/node';
-import { http, HttpResponse } from 'msw';
 import { vi } from 'vitest';
 
 // WalletConnect relay and API mock handlers
@@ -66,7 +66,7 @@ export const walletConnectServer = setupServer(...handlers);
  * Mock matchMedia for browser environment
  * Required for WalletConnect's responsive behavior
  */
-export const setupMatchMedia = () => {
+export const setupMatchMedia = (): void => {
   const matchMedia = vi.fn().mockImplementation((query: string) => {
     return {
       matches: false,
@@ -80,7 +80,6 @@ export const setupMatchMedia = () => {
     };
   });
   vi.stubGlobal('matchMedia', matchMedia);
-  return matchMedia;
 };
 
 /**
