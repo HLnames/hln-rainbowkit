@@ -1,13 +1,13 @@
 import { useQuery } from '@tanstack/react-query';
 import {
   type Address,
-  createPublicClient,
-  http,
   type Chain,
+  createPublicClient,
+  type GetEnsAvatarReturnType,
+  type GetEnsNameReturnType,
+  http,
   namehash,
   zeroAddress,
-  type GetEnsNameReturnType,
-  type GetEnsAvatarReturnType,
 } from 'viem';
 import {
   type RainbowKitChain,

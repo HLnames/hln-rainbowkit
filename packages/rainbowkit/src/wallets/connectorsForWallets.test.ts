@@ -1,8 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import type { CreateConnectorFn } from 'wagmi';
+import { type CreateConnectorFn, createConfig, http } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 import { walletConnect } from 'wagmi/connectors';
 import { connectorsForWallets } from '..';
-import type { CreateWalletFn } from './Wallet';
+import type { CreateWalletFn, WagmiConnectorInstance } from './Wallet';
+import { base, baseAccount } from './walletConnectors/base/base';
+import { coinbaseWallet } from './walletConnectors/coinbaseWallet/coinbaseWallet';
 import { injectedWallet } from './walletConnectors/injectedWallet/injectedWallet';
 import { walletConnectWallet } from './walletConnectors/walletConnectWallet/walletConnectWallet';
 
@@ -20,7 +23,7 @@ describe('connectorsForWallets', () => {
   describe('injected fallback', () => {
     it('should return wallet connect and injected wallet connectors', () => {
       const customWallet: CreateWalletFn = (params) => ({
-        createConnector: () => walletConnect({ projectId: params?.projectId! }),
+        createConnector: () => walletConnect({ projectId: params.projectId }),
         iconBackground: '#fff',
         iconUrl: '/test.png',
         id: 'test-walletconnect-wallet',
@@ -50,7 +53,7 @@ describe('connectorsForWallets', () => {
 
     it("should not return connector if 'hidden' returns true", () => {
       const customWallet: CreateWalletFn = (params) => ({
-        createConnector: () => walletConnect({ projectId: params?.projectId! }),
+        createConnector: () => walletConnect({ projectId: params.projectId }),
         hidden: () => true,
         iconBackground: '#fff',
         iconUrl: '/test.png',
@@ -91,6 +94,52 @@ describe('connectorsForWallets', () => {
       }).toThrow(
         'No projectId found. Every dApp must now provide a WalletConnect Cloud projectId',
       );
+    });
+  });
+
+  describe('wallet ids', () => {
+    const createConfigForWallets = (wallets: CreateWalletFn[]) =>
+      createConfig({
+        chains: [mainnet],
+        connectors: connectorsForWallets(
+          [
+            {
+              groupName: 'Test Group 1',
+              wallets,
+            },
+          ],
+          {
+            projectId: exampleProjectId,
+            appName: 'rainbowkit.com',
+          },
+        ),
+        transports: {
+          [mainnet.id]: http(),
+        },
+      });
+
+    it('preserves the wagmi baseAccount connector id for the renamed base wallet', () => {
+      const config = createConfigForWallets([base]);
+      const connector = config.connectors[0] as WagmiConnectorInstance;
+
+      expect(config.connectors).toHaveLength(1);
+      expect(connector.id).toBe('baseAccount');
+      expect(connector.rkDetails?.id).toBe('base');
+      expect(connector.rkDetails?.aliases).toEqual(['baseAccount']);
+    });
+
+    it('keeps baseAccount as a reference to the canonical base wallet', () => {
+      expect(baseAccount).toBe(base);
+    });
+
+    it('keeps the legacy coinbaseWallet connector export available', () => {
+      const config = createConfigForWallets([coinbaseWallet]);
+      const connector = config.connectors[0] as WagmiConnectorInstance;
+
+      expect(config.connectors).toHaveLength(1);
+      expect(connector.id).toBe('coinbaseWalletSDK');
+      expect(connector.rkDetails?.id).toBe('coinbase');
+      expect(connector.rkDetails?.aliases).toEqual(['coinbaseWallet']);
     });
   });
 });

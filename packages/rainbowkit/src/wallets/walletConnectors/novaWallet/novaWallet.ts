@@ -1,10 +1,10 @@
+import type { WindowProvider } from '../../../types/utils';
 import {
   getInjectedConnector,
   hasInjectedProvider,
 } from '../../getInjectedConnector';
-import type { DefaultWalletOptions, Wallet } from '../../Wallet';
 import { getWalletConnectConnector } from '../../getWalletConnectConnector';
-import type { WindowProvider } from '../../../types/utils';
+import type { DefaultWalletOptions, Wallet } from '../../Wallet';
 
 export type NovaWalletOptions = DefaultWalletOptions;
 
@@ -19,7 +19,9 @@ export const novaWallet = ({
   walletConnectParameters,
 }: NovaWalletOptions): Wallet => {
   const isNovaWalletInjected =
-    typeof window !== 'undefined' ? isNovaWallet(window.ethereum) : false;
+    typeof window !== 'undefined'
+      ? isNovaWallet((window as Window & WindowProvider).ethereum)
+      : false;
 
   const shouldUseWalletConnect = !isNovaWalletInjected;
 

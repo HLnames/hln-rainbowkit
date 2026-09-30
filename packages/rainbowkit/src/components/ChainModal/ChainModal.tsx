@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { useAccount, useDisconnect, useSwitchChain } from 'wagmi';
-import { useConfig } from 'wagmi';
+import { useAccount, useConfig, useDisconnect, useSwitchChain } from 'wagmi';
 import { isMobile } from '../../utils/isMobile';
 import { Box } from '../Box/Box';
 import { CloseButton } from '../CloseButton/CloseButton';
@@ -45,7 +44,7 @@ export function ChainModal({ onClose, open }: ChainModalProps) {
 
   const { i18n } = useContext(I18nContext);
 
-  const { disconnect } = useDisconnect();
+  const { mutate: disconnect } = useDisconnect();
   const titleId = 'rk_chain_modal_title';
   const mobile = isMobile();
   const isCurrentChainSupported = chains.some((chain) => chain.id === chainId);

@@ -1,0 +1,28 @@
+name: Validate HLnames RainbowKit
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: '1'
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .nvmrc
+      - uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+      # The package's prepare hook generates declarations and all build entries.
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm typecheck:package
+      - run: pnpm test:package
+      - run: pnpm --filter with-next-app build
+      - run: pnpm --filter @hlnames/rainbowkit pack --pack-destination artifacts
+      - run: git diff --exit-code -- pnpm-lock.yaml
